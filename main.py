@@ -10,7 +10,6 @@ from forms import CreatePostForm, RegisterUser, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
 import os
-import psycopg2
 
 
 app = Flask(__name__)
