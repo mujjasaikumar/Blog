@@ -9,6 +9,8 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, RegisterUser, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
+import os
+import psycopg2
 
 
 app = Flask(__name__)
@@ -17,7 +19,9 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+# 'sqlite:///blog.db'
+# postgresql://blog_database:L9RqpUYdc6tCLXgvmkxSaV5BP4uBdgl3@dpg-cgaqum9mbg55nqjndi2g-a.oregon-postgres.render.com/blog_database_3rt8
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
