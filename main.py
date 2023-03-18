@@ -20,8 +20,7 @@ Bootstrap(app)
 
 # CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-# 'sqlite:///blog.db'
-# postgresql://blog_database:L9RqpUYdc6tCLXgvmkxSaV5BP4uBdgl3@dpg-cgaqum9mbg55nqjndi2g-a.oregon-postgres.render.com/blog_database_3rt8
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
