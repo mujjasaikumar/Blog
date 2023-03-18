@@ -10,6 +10,10 @@ from forms import CreatePostForm, RegisterUser, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
 import os
+from datetime import datetime
+
+
+current_year = datetime.now().year
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -115,7 +119,7 @@ def admin_only(f):
 @app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
+    return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated, year=current_year)
 
 
 @app.route('/register', methods=["POST", "GET"])
@@ -141,7 +145,7 @@ def register():
 
         login_user(new_user)
         return redirect(url_for("get_all_posts"))
-    return render_template("register.html", form=user_register, logged_in=current_user.is_authenticated)
+    return render_template("register.html", form=user_register, logged_in=current_user.is_authenticated, year=current_year)
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -162,7 +166,7 @@ def login():
         else:
             login_user(user)
             return redirect(url_for('get_all_posts'))
-    return render_template("login.html", form=login_form, logged_in=current_user.is_authenticated)
+    return render_template("login.html", form=login_form, logged_in=current_user.is_authenticated, year=current_year)
 
 
 @app.route('/logout')
@@ -192,17 +196,17 @@ def show_post(post_id):
         db.session.commit()
         # return redirect(url_for("show_post"))
 
-    return render_template("post.html", post=requested_post, logged_in=current_user.is_authenticated, form=comment_form)
+    return render_template("post.html", post=requested_post, logged_in=current_user.is_authenticated, form=comment_form, year=current_year)
 
 
 @app.route("/about")
 def about():
-    return render_template("about.html", logged_in=current_user.is_authenticated)
+    return render_template("about.html", logged_in=current_user.is_authenticated, year=current_year)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html", logged_in=current_user.is_authenticated)
+    return render_template("contact.html", logged_in=current_user.is_authenticated, year=current_year)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
@@ -243,7 +247,7 @@ def edit_post(post_id):
         post.body = edit_form.body.data
         db.session.commit()
 
-    return render_template("make-post.html", form=edit_form, logged_in=current_user.is_authenticated, is_edit=True)
+    return render_template("make-post.html", form=edit_form, logged_in=current_user.is_authenticated, is_edit=True, year=current_year)
 
 
 @app.route("/delete/<int:post_id>", methods=["GET", "POST"])
@@ -263,7 +267,7 @@ def delete_comment(comment_id, current_post):
     comment_to_delete = Comment.query.get(comment_id)
     db.session.delete(comment_to_delete)
     db.session.commit()
-    return render_template("post.html", post=current_post, logged_in=current_user.is_authenticated, form=comment_form)
+    return render_template("post.html", post=current_post, logged_in=current_user.is_authenticated, form=comment_form, year=current_year)
 
 
 if __name__ == "__main__":
