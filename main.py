@@ -277,5 +277,5 @@ def delete_comment(comment_id, current_post):
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    gunicorn -w 4 -b 0.0.0.0:8000 app:main
+    gunicorn -w 4 -b 0.0.0.0:8000 main:main
 
