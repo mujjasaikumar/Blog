@@ -10,6 +10,8 @@ from flask_gravatar import Gravatar
 from functools import wraps
 import os
 from datetime import datetime
+import gunicorn
+
 
 
 current_year = datetime.now().year
@@ -274,4 +276,6 @@ def delete_comment(comment_id, current_post):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    gunicorn -w 4 -b 0.0.0.0:8000 app:app
+
