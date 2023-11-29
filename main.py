@@ -296,8 +296,8 @@ if __name__ == "__main__":
                 return self.application
 
         gunicorn_options = {
-            'bind': '0.0.0.0',  # Specify your desired host and port
-            'workers': 3,  # Adjust based on your server's capacity
+            'bind': '0.0.0.0:8080',  # Specify your desired host and port
+            # 'workers': 3,  # Adjust based on your server's capacity
             'timeout': 30,  # Set request timeout
         }
 
