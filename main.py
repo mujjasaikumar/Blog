@@ -301,7 +301,7 @@ if __name__ == "__main__":
             'timeout': 30,  # Set request timeout
         }
 
-        FlaskGunicornApp(app, gunicorn_options).run()
+        FlaskGunicornApp(app, gunicorn_options).run(debug=True)
     else:
-        app.run()
+        app.run(debug=True)
 
