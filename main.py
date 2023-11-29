@@ -11,6 +11,8 @@ from functools import wraps
 import os
 from datetime import datetime
 import gunicorn
+from gevent.pywsgi import WSGIServer
+
 
 
 
@@ -277,5 +279,6 @@ def delete_comment(comment_id, current_post):
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    app.run(host="0.0.0.0")
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
 
