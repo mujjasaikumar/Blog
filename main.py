@@ -11,7 +11,6 @@ from functools import wraps
 import os
 from datetime import datetime
 import gunicorn
-from gevent.pywsgi import WSGIServer
 
 
 
@@ -279,6 +278,30 @@ def delete_comment(comment_id, current_post):
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    http_server = WSGIServer(('', 5000), app)
-    http_server.serve_forever()
+    if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+        # Start Gunicorn when the script is run using 'python app.py'
+        from gunicorn.app.base import BaseApplication
+
+        class FlaskGunicornApp(BaseApplication):
+            def __init__(self, app, options=None):
+                self.options = options or {}
+                self.application = app
+                super().__init__()
+
+            def load_config(self):
+                for key, value in self.options.items():
+                    self.cfg.set(key, value)
+
+            def load(self):
+                return self.application
+
+        gunicorn_options = {
+            'bind': '0.0.0.0:8000',  # Specify your desired host and port
+            'workers': 3,  # Adjust based on your server's capacity
+            'timeout': 30,  # Set request timeout
+        }
+
+        FlaskGunicornApp(app, gunicorn_options).run()
+    else:
+        app.run()
 
